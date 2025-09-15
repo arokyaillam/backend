@@ -1,5 +1,6 @@
 import { Elysia } from 'elysia';
 import { db, schema } from './db'; // நாம் படி 4-ல் உருவாக்கிய DB இணைப்பு மற்றும் ஸ்கீமா
+import { authController } from './controllers/auth.controller';
 
 const app = new Elysia()
     /**
@@ -9,6 +10,9 @@ const app = new Elysia()
      */
     .decorate({ db })
     .decorate({ schema })
+
+    // Auth Controller-ஐ இங்கே இணைக்கவும்
+    .use(authController) // <-- /auth/signup வழியை இது சேர்க்கும்
 
     // சர்வர் மற்றும் DB இணைப்பை சோதித்தல்
     .get('/', async ({ db }) => {
