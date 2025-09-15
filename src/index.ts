@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia';
 import { db, schema } from './db'; // நாம் படி 4-ல் உருவாக்கிய DB இணைப்பு மற்றும் ஸ்கீமா
 import { authController } from './controllers/auth.controller';
+import { swagger } from '@elysiajs/swagger';
 
 const app = new Elysia()
     /**
@@ -10,6 +11,15 @@ const app = new Elysia()
      */
     .decorate({ db })
     .decorate({ schema })
+     .use(swagger({
+      path: '/swagger', // இதுதான் ஆவணங்கள் இருக்கும் URL
+      documentation: {
+        info: {
+          title: 'நமது டிரேடிங் பிளாட்ஃபார்ம் API',
+          version: '1.0.0'
+        }
+      }
+    }))
 
     // Auth Controller-ஐ இங்கே இணைக்கவும்
     .use(authController) // <-- /auth/signup வழியை இது சேர்க்கும்
