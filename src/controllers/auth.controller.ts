@@ -99,4 +99,36 @@ export const authController = new Elysia({ prefix: '/auth' })
                 password: t.String()
             })
         }
+        
+    )
+    /**
+     * படி 11: பாதுகாக்கப்பட்ட '/me' Endpoint (JWT Guard உடன்)
+     * இது பயனரின் டோக்கனைச் சரிபார்த்து, அவரின் சுயவிவரத் தகவலைத் திருப்பித் தரும்.
+     */
+    .get(
+      '/me',
+      async ({ jwt, headers, set }) => {
+          // 1. டோக்கனைச் சரிபார்த்து, பயனர் Payload-ஐப் பெறவும் (verify மற்றும் decode)
+          const userPayload = await jwt.verify(headers.authorization?.split(' ')[1]); // "Bearer TOKEN..."
+
+          if (!userPayload) {
+              set.status = 401; // Unauthorized
+              return { error: 'அங்கீகரிக்கப்படாத கோரிக்கை' };
+          }
+
+          // 2. டோக்கன் செல்லுபடியாகும் பட்சத்தில், பயனரின் தகவலைத் திருப்பி அனுப்பவும்
+          // (பாதுகாப்பிற்காக நாம் மீண்டும் DB-ஐ சரிபார்க்கலாம், ஆனால் JWT payload இங்கே போதுமானது)
+          return {
+              userId: userPayload.userId,
+              email: userPayload.email
+          };
+      },
+      {
+          // 3. இது மிக முக்கியம்: கோரிக்கையின் headers-ல் 'authorization' இருக்க வேண்டும் என Elysia-விடம் கூறுகிறோம்
+          headers: t.Object({
+              authorization: t.String({ startsWith: 'Bearer ' }) // டோக்கன் "Bearer " என்று தொடங்க வேண்டும்
+          })
+      }
     );
+
+    
