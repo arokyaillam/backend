@@ -46,3 +46,4 @@ console.log(
 console.log(
   `📄 API ஆவணங்கள் (Swagger UI) இங்கே: http://${app.server?.hostname}:${app.server?.port}/swagger`
 );
+export type App = typeof app;
