@@ -3,6 +3,7 @@ import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger'; // <-- (நாம் படி 9-ல் நிறுவிய Swagger)
 import { db, schema } from './db';
 import { authController } from './controllers/auth.controller'; // <-- (நாம் படி 8, 10, 11-ல் உருவாக்கிய Auth Controller)
+import { brokerController } from './controllers/broker.controller'; // <-- (நாம் படி 12-ல் உருவாக்கிய Broker Controller)
 
 const app = new Elysia()
     .use(cors())
@@ -29,6 +30,7 @@ const app = new Elysia()
      * இதுதான் '/auth/signup', '/auth/login', மற்றும் '/auth/me' endpoints-களை உருவாக்கும்.
      */
     .use(authController) 
+    .use(brokerController)
 
     // உங்கள் முந்தைய ரூட் டெஸ்ட் Endpoint
     .get('/', async ({ db }) => {
