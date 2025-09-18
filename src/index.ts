@@ -1,9 +1,11 @@
 import { Elysia } from 'elysia';
+import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger'; // <-- (நாம் படி 9-ல் நிறுவிய Swagger)
-import { db, schema } from './db'; 
+import { db, schema } from './db';
 import { authController } from './controllers/auth.controller'; // <-- (நாம் படி 8, 10, 11-ல் உருவாக்கிய Auth Controller)
 
 const app = new Elysia()
+    .use(cors())
     // 1. DB மற்றும் ஸ்கீமாவை Decorate செய்யவும் (இது ஏற்கனவே உங்கள் கோப்பில் உள்ளது)
     .decorate({ db })
     .decorate({ schema })
